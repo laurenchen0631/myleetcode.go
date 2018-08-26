@@ -28,8 +28,6 @@ func GetHint(secret string, guess string) string {
 
 	secretChan := make(chan rune, len(secret))
 	guessChan := make(chan rune, len(guess))
-	secretCounterTaskDone := make(chan bool)
-	guessCounterTaskDone := make(chan bool)
 	bullCounterChannel := make(chan int)
 
 	secretCounter := make(map[rune]int)
@@ -40,7 +38,6 @@ func GetHint(secret string, guess string) string {
 			secretChan <- c
 			secretCounter[c]++
 		}
-		secretCounterTaskDone <- true
 		close(secretChan)
 	}()
 
@@ -49,7 +46,6 @@ func GetHint(secret string, guess string) string {
 			guessChan <- c
 			guessCounter[c]++
 		}
-		guessCounterTaskDone <- true
 		close(guessChan)
 	}()
 
@@ -67,8 +63,6 @@ func GetHint(secret string, guess string) string {
 		bullCounterChannel <- bullCounter
 	}()
 
-	<-secretCounterTaskDone
-	<-guessCounterTaskDone
 	numBulls := <-bullCounterChannel
 	numCows := -numBulls
 	for key, numGuess := range guessCounter {
