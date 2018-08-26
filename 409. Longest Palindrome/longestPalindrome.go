@@ -1,10 +1,8 @@
-package main
+package longestpalindrome
 
-import (
-	"fmt"
-)
-
-func longestPalindrome(s string) int {
+// LongestPalindrome Given a string which consists of lowercase or uppercase letters
+// find the length of the longest palindromes that can be built with those letters.
+func LongestPalindrome(s string) int {
 	dict := make(map[rune]int)
 	for _, char := range s {
 		dict[char]++
@@ -24,10 +22,4 @@ func longestPalindrome(s string) int {
 	}
 
 	return palindromeLen
-}
-
-func main() {
-	fmt.Println(longestPalindrome("abccccdd"))
-	fmt.Println(longestPalindrome("ccc"))
-
 }
